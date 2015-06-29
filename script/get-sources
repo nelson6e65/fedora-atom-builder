@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+# -*- ENCODING: UTF-8 -*-
+#
+# Copyright © 2015 Nelson Martell (http://nelson6e65.github.io)
+#
+# Licensed under The MIT License (MIT)
+#
+# For full copyright and license information, please see the LICENSE
+# Redistributions of files must retain the above copyright notice.
+#
+# To run this script directly, you must have Git and Atom dependencies installed.
+# See: script/install-dependencies
+#
+#
+
+if [[ -z $SCRIPT_DIR ]]; then
+    # Current file directory
+    declare -xr SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+fi
+
+if [[ -z $ROOT_DIR ]]; then
+    # Root directory
+    declare -xr ROOT_DIR=$(dirname "$SCRIPT_DIR")
+fi
+
+. "$ROOT_DIR/config/init"
+
+function prepare_dir() {
+    declare -i r=0
+    declare dir=${$1:-$SRC_DIR}
+    # Checks if sources directory for sources:
+    if [[ -e $dir ]]; then
+        if [[ ! -d $dir ]]; then
+            echo "Error: '$dir' must to be a directory."
+            echo -n "'$dir' exists, but can not be used as source directory."
+            echo " Solve it manually and run this script again."
+
+            # TODO: Add autosolver
+
+            r=$E_GIT_CLONE_DIRECTORY
+        fi
+    else
+        # Try to solve, creating the folder...
+        mkdir "$dir"
+        if [[ $? -ne 0 ]]; then
+            r=$E_GIT_CLONE_DIRECTORY
+        fi
+    fi
+
+    if [[ ! -w $dir ]]; then
+        echo "Error: '$dir' must to have write permissions."
+        echo -n "'$dir' directory exists, but can not be used as source directory."
+        echo " Grand write permissions manually and run this script again."
+
+        # TODO: Add autosolver
+
+        r=$E_GIT_CLONE_DIRECTORY
+    fi
+
+    return "$r"
+}
+
+function get_sources() {
+    declare -i r=0
+    echo_separator "="
+    echo_header "Cloning Atom repository..."
+    echo_separator "=";echo
+
+    prepare_dir
+
+    r=$(( r | $? ))
+
+    log_cd "$SRC_DIR"
+    r=$(( r | $? ))
+
+    if [[ $r -eq 0 ]]; then
+        git clone https://github.com/atom/atom
+
+        echo_result
+        r=$(( r | $? ))
+
+        if [[ $r -ne 0 ]]; then
+            case $? in
+                128 )
+                    echo "Unexpected error while getting sources from GitHub."
+                    r=$(( r | E_GIT_CLONE_UNEXPECTED ))
+                    ;;
+            esac
+
+            r=$(( r | E_GIT_CLONE_ERROR ))
+        fi
+    fi
+
+    return "$r"
+}
+
+function prepare_fetch() {
+    declare -i r=0
+    prepare_dir "$SRC_DIR/atom"
+
+    return $r
+}
+
+function update_sources() {
+    declare -i r=0
+    prepare_fetch
+
+    echo "#3 - Checkout the latest Atom release..."
+    git fetch -p
+
+    echo $?
+
+    git checkout "$(git describe --tags "$(git rev-list --tags --max-count=1)")"
+
+    echo $?
+}
+
+echo_separator '_'
+echo_separator '='
+echo_header "Get sources of Atom Editor"
+echo_separator '='; echo
+
+declare -i errors=$E_NONE
+
+get_sources
+
+echo_result
+errors=$(( r | $? ))
+
+
+# pause
+# updateSources
+
+echo_separator '_'
+return $errors

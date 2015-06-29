@@ -49,6 +49,7 @@ log_cd() {
         current=$(font_bold "${current}")
         echo; echo "Entering into '$current' directory..."
     else
+        echo; echo "Error: Unable to enter into '$current' directory..."
         r=$E_DIRECTORY_CD
     fi
 

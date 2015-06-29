@@ -23,7 +23,6 @@ function bash_header() {
     echo_separator "#"
 }
 
-
 bash_header
 
 echo_header "Directories that will be used" "-"
@@ -34,13 +33,14 @@ echo "Sources directory:      '$dir'"
 
 log_cd "$ROOT_DIR"
 
+declare -i errors=$E_NONE
+
 script/install-dependencies
+errors=$(( errors | $? ))
+
+script/get-sources
+errors=$(( errors | $? ))
 
 pause
 
-# script/get-sources
-
-
-
-
-# pause
+exit $errors
