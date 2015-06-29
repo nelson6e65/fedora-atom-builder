@@ -1,0 +1,235 @@
+# -*-Shell-script-*-
+#
+# functions	This file contains functions to be used by atom builder.
+#
+#
+# Copyright (c) 2015 Nelson Martell (http://nelson6e65.github.io)
+#
+# Licensed under The MIT License (MIT)
+#
+# For full copyright and license information, please see the LICENSE
+# Redistributions of files must retain the above copyright notice.
+#
+
+# . /etc/init.d/functions
+
+
+# set_color() {
+#     result=${1:-'normal'}
+#     case $result in
+#         "success" )
+#             $SETCOLOR_SUCCESS
+#         ;;
+#         "failure" )
+#             $SETCOLOR_FAILURE
+#         ;;
+#         "warning" )
+#             $SETCOLOR_WARNING
+#         ;;
+#         * )
+#             $SETCOLOR_NORMAL
+#         ;;
+#     esac
+# }
+
+is_installed() {
+    if [[ -x /usr/local/bin/$1 ]] || [[ -x /usr/bin/$1 ]] || [[ -x /usr/sbin/$1 ]]; then
+        return 0
+    fi
+
+    return 1
+}
+
+log_cd() {
+    cd "$1"
+    r=$?
+
+    if [[ $r == 0 ]]; then
+        current=$(pwd)
+        current=$(font_bold "${current}")
+        echo; echo "Entering into '$current' directory..."
+    else
+        r=$E_DIRECTORY_CD
+    fi
+
+    return "$r"
+}
+
+# Performs a readkey to simule a pause effect until user press a key.
+pause() {
+    echo "Press a key to continue..."; read -s -n 1
+}
+
+# Print an separator, using all width of console.
+#
+echo_separator() {
+    declare opc=''
+
+    case $# in
+        1 )
+            # If only separator passed
+            s=$1
+        ;;
+        2 )
+            # If '-n' and separator passed
+            if [ "$1" == '-n' ] ; then
+                opc='-n'
+            fi
+            s=$2
+        ;;
+        * )
+            s=" "
+        ;;
+    esac
+
+    # echo "¿Fin de línea? $1"
+
+    # Ensure separator is one char length
+    s=${s:0:1}
+
+    # Extract width of console
+    length=$(tput cols)
+
+    printf -v line '%*s' "$length"
+    echo $opc "${line// /$s}"
+
+    # if [ $endl -eq 1 ]; then
+    #     echo
+    #     #echo
+    # fi
+}
+
+# Prints a text enclosed between '[' and ']' in a line.
+# Optionally, can be passed a char to fill blank spaces at right.
+#
+# Usage: echo_header <content> [<fill_char>]
+echo_header() {
+
+    # if [ $# -eq 0 ]; then
+    #     echo "Usage: echo_header <content> [<fill_char>]"
+    #     echo "Example:"
+    #     echo "echo_header 'Title' '-'"
+    #     echo "Output:"
+    #     echo_header 'Title' '-'
+    #     exit -1
+    # fi
+
+    # Default values
+    declare text=${1:-''}
+    declare separator=${2:-''}
+
+    echo_separator -n "$separator"
+    echo -ne "\r"
+    text=$(font_bold "$text")
+    echo "[ $text ] "
+    return 0
+}
+
+echo_nheader() {
+    # Default values
+    declare n=${1}
+    declare text=${2:-''}
+    declare separator=${3:-''}
+
+    echo_separator -n "$separator"
+    echo -ne "\r"
+    text=$(font_bold "$text")
+    echo "$n [ $text ] "
+    return 0
+}
+
+
+# Print "Sucess!" or "Failed!" depending if value given (default: $?) represents
+# a success (0) of failed statment, respectively.
+echo_result() {
+    declare result=${1:-$?}
+
+    echo
+
+    if [ "$result" -eq 0 ]; then
+        echo -e "\e[32mSuccess!\e[0m"
+    else
+        echo -e "\e[31mFailed!\e[0m"
+    fi
+
+    echo
+
+    return "$result"
+}
+
+font_bold() {
+    bold=$(tput bold)
+    normal=$(tput sgr0)
+
+    echo -ne "${bold}${1}${normal}"
+}
+
+# Determines if a flag is contained in an integer
+has_flag() {
+    declare -i value=$1
+    declare -i flag=$2
+
+    return $(((value & flag) == flag))
+}
+
+next_flag() {
+    declare -i current=$1
+    declare -i next=1
+
+    if [[ $current -ge 1 ]]; then
+        next=$((current * 2))
+    fi
+
+    return $next
+}
+
+echo_errors() {
+    declare -ir flags=$1
+    current=1
+    while [[ $current -le $flags ]]; do
+
+        has=$(has_flag "$flags" "$current")
+
+        if [[ $has -eq 0 ]]; then
+            case $current in
+                $E_INSTALL_DEP )
+                    msg=
+                ;;
+                2 )
+                    # If '-n' and separator passed
+                    if [ "$1" == '-n' ] ; then
+                        opc='-n'
+                    fi
+                    s=$2
+                ;;
+                * )
+                    s=" "
+                ;;
+            esac
+
+            echo "$msg"
+        fi
+
+        current=$(next_flag $current)
+    done
+
+
+}
+
+
+
+
+function menu() {
+    echo "==========================================================================="
+    echo "Select an option to perform"
+    echo "---------------------------------------------------------------------------"
+
+    echo "[I]nstall - Install/update building dependencies. This gets atom source"
+    echo "            code (clone from GitHub), builds and updates to lastest release"
+    echo "[U]pdate  - Just update an existent installation of Atom, building lastest "
+    echo "            release source code"
+}
+
+function getAtomVersion() {
+    atom --version
+}

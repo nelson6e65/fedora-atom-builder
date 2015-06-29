@@ -1,0 +1,39 @@
+# -*-Shell-script-*-
+# -*- ENCODING: UTF-8 -*-
+#
+# Copyright © 2015 Nelson Martell (http://nelson6e65.github.io)
+#
+# Licensed under The MIT License (MIT)
+#
+# For full copyright and license information, please see the LICENSE
+# Redistributions of files must retain the above copyright notice.
+
+# Init configuration
+
+# if [[ -n $CONFIG_INITIALIZED ]]; then
+#     echo "Already initialized"
+#     return 0
+# fi
+
+if [[ -z $CONFIG_DIR ]]; then
+    # Current script directory
+    declare -xr CONFIG_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+fi
+
+. "$CONFIG_DIR/constants"
+
+if [[ $? -ne 0 ]]; then
+    echo "Internal Error: Loading constants."
+    exit 1
+fi
+
+. "$CONFIG_DIR/functions"
+
+if [[ $? -ne 0 ]]; then
+    echo "Internal Error: Loading functions."
+    exit E_INIT
+fi
+
+# declare -ixr CONFIG_INITIALIZED=0
+
+return 0

@@ -1,0 +1,54 @@
+# -*-Shell-script-*-
+#
+# constants	This file contains constants to be used by atom builder.
+#
+# Copyright © 2015 Nelson Martell (http://nelson6e65.github.io)
+#
+# Licensed under The MIT License (MIT)
+#
+# For full copyright and license information, please see the LICENSE
+# Redistributions of files must retain the above copyright notice.
+#
+
+if [[ -n $CONFIG_CONSTANTS_LOADED ]]; then
+    return 0
+fi
+
+# Absolute directories
+if [[ -z $CONFIG_DIR ]]; then
+    # Current file directory
+    declare -xr CONFIG_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+fi
+
+if [[ -z $ROOT_DIR ]]; then
+    declare -xr ROOT_DIR=$(dirname "$SCRIPT_DIR")
+fi
+
+if [[ -z $SRC_DIR ]]; then
+    declare -xr SRC_DIR="$ROOT_DIR/sources"
+fi
+
+if [[ -z $TMP_DIR ]]; then
+    declare -xr TMP_DIR="$ROOT_DIR/tmp"
+fi
+
+if [[ -z $SCRIPT_DIR ]]; then
+    # Current file directory
+    declare -xr SCRIPT_DIR="$ROOT_DIR/script"
+fi
+
+# [Flags]
+# Error constants
+declare -ixr E_NONE=0
+declare -ixr E_INIT=1
+declare -ixr E_INSTALL_DEP=2
+declare -ixr E_INSTALL_NODE=4
+declare -ixr E_INSTALL_GIT=8
+declare -ixr E_DIRECTORY_CD
+declare -ixr E_GIT_CLONE_ERROR
+
+
+
+declare -ixr E_LAST=8
+
+declare -ixr CONFIG_CONSTANTS_LOADED=0
