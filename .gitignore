@@ -3,3 +3,5 @@
 
 /sources/*
 !/sources/NO_EMPTY
+
+*.bak
