@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# -*- ENCODING: UTF-8 -*-
+#
+# Copyright (c) 2015 Nelson Martell (http://nelson6e65.github.io)
+#
+# Licensed under The MIT License (MIT)
+#
+# For full copyright and license information, please see the LICENSE
+# Redistributions of files must retain the above copyright notice.
+#
+
+if [[ -z $SCRIPT_DIR ]]; then
+    # Current file directory
+    declare -xr SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+fi
+
+if [[ -z $ROOT_DIR ]]; then
+    # Root directory
+    declare -xr ROOT_DIR=$(dirname "$SCRIPT_DIR")
+fi
+
+. "$ROOT_DIR/config/init"
+
+# Return value
+declare -i errores=$E_NONE
+
+echo_separator '_'
+echo_separator '='
+echo_header "Install Atom requirements"
+echo_separator '='; echo
+
+echo_header "Get build dependencies" '-'; echo
+
+sudo yum -y install make gcc gcc-c++ glibc-devel libgnome-keyring-devel rpmdevtools
+
+echo_result
+if [ $? -ne 0 ]; then
+    errores=$((errores | E_INSTALL_DEP))
+fi
+
+echo_header "Get Node.js" '-'; echo
+
+sudo yum -y install nodejs npm
+
+echo_result
+if [ $? -ne 0 ]; then
+    errores=$((errores | E_INSTALL_NODE))
+fi
+
+echo_header "Get git" '-'; echo
+
+is_installed "git"
+
+if [[ $? -ne 0 ]]; then
+    sudo yum -y install git
+fi
+
+echo_result
+if [ $? -ne 0 ]; then
+    errores=$((errores | E_INSTALL_GIT))
+fi
+
+echo_separator '_'; echo
+
+# TODO: Confirmation on errors
+if [[ $errores -ne 0 ]]; then
+    echo_header "Errors" '·'; echo
+
+
+
+
+
+
+fi
+
+# pause
+
+return $errores
