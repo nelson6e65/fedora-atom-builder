@@ -29,6 +29,9 @@ echo_separator '='
 echo_header "Install Atom requirements"
 echo_separator '='; echo
 
+echo "This will take a few minutes."
+echo "You only will be disturbed for a password or if an error occurrs."; echo
+
 echo_header "Get build dependencies" '-'; echo
 
 sudo yum -y install make gcc gcc-c++ glibc-devel libgnome-keyring-devel rpmdevtools
