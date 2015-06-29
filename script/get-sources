@@ -27,7 +27,7 @@ fi
 
 function prepare_dir() {
     declare -i r=0
-    declare dir=${$1:-$SRC_DIR}
+    declare dir=${1:-$SRC_DIR}
     # Checks if sources directory for sources:
     if [[ -e $dir ]]; then
         if [[ ! -d $dir ]]; then
