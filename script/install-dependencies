@@ -43,6 +43,8 @@ fi
 
 echo_header "Get Node.js" '-'; echo
 
+# TODO: Fix conflicts when another node is installed
+# I solved: sudo yum remove node* before install and works for me.
 sudo yum -y install nodejs npm
 
 echo_result
