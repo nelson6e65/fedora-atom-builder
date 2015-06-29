@@ -67,17 +67,4 @@ fi
 
 echo_separator '_'; echo
 
-# TODO: Confirmation on errors
-if [[ $errores -ne 0 ]]; then
-    echo_header "Errors" '·'; echo
-
-
-
-
-
-
-fi
-
-# pause
-
-return $errores
+exit $errores

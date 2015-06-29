@@ -62,9 +62,7 @@ function prepare_dir() {
 
 function get_sources() {
     declare -i r=0
-    echo_separator "="
-    echo_header "Cloning Atom repository..."
-    echo_separator "=";echo
+    echo_header "Cloning Atom repository" "-"
 
     prepare_dir
 
@@ -132,4 +130,5 @@ errors=$(( r | $? ))
 # updateSources
 
 echo_separator '_'
-return $errors
+
+exit $errors
