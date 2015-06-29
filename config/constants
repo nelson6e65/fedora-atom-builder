@@ -44,8 +44,8 @@ declare -ixr E_INIT=1
 declare -ixr E_INSTALL_DEP=2
 declare -ixr E_INSTALL_NODE=4
 declare -ixr E_INSTALL_GIT=8
-declare -ixr E_DIRECTORY_CD
-declare -ixr E_GIT_CLONE_ERROR
+declare -ixr E_DIRECTORY_CD=16
+declare -ixr E_GIT_CLONE_ERROR=32
 
 
 
