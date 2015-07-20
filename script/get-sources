@@ -105,11 +105,13 @@ function get_sources() {
 
 function is_already_cloned() {
     declare -i r=1
+
     if [[ -e "$SRC_DIR/atom/.git" ]]; then
         git -C "$SRC_DIR/atom" remote -v
         r=$?
     fi
 
+    echo
     return $r;
 }
 
@@ -132,7 +134,7 @@ function update_sources() {
 
     # prepare_fetch
 
-    echo_header "Checkout the latest Atom release" "-"
+    echo_header "Fetching the latest Atom release" "-"
     log_cd "$SRC_DIR/atom"
 
     git fetch -p
