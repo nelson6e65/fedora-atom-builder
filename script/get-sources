@@ -71,60 +71,94 @@ function get_sources() {
     log_cd "$SRC_DIR"
     r=$(( r | $? ))
 
+    # pause
+
     if [[ $r -eq 0 ]]; then
-        git clone https://github.com/atom/atom
+        # pause
 
-        echo_result
-        r=$(( r | $? ))
+        is_already_cloned
 
-        if [[ $r -ne 0 ]]; then
-            case $? in
-                128 )
-                    echo "Unexpected error while getting sources from GitHub."
-                    r=$(( r | E_GIT_CLONE_UNEXPECTED ))
-                    ;;
-            esac
+        # Only clone if is not cloned yet
+        if [[ $? -ne 0 ]]; then
 
-            r=$(( r | E_GIT_CLONE_ERROR ))
+            git clone https://github.com/atom/atom
+
+            echo_result
+            r=$(( r | $? ))
+
+            if [[ $r -ne 0 ]]; then
+                case $? in
+                    128 )
+                        echo "Unexpected error while getting sources from GitHub."
+                        r=$(( r | E_GIT_CLONE_UNEXPECTED ))
+                        ;;
+                esac
+
+                r=$(( r | E_GIT_CLONE_ERROR ))
+            fi
         fi
+
     fi
 
     return "$r"
 }
 
-function prepare_fetch() {
+function is_already_cloned() {
+    declare -i r=1
+    if [[ -e "$SRC_DIR/atom/.git" ]]; then
+        git -C "$SRC_DIR/atom" remote -v
+        r=$?
+    fi
+
+    return $r;
+}
+
+# function prepare_fetch() {
+#     declare -i r=0
+#     prepare_dir "$SRC_DIR/atom"
+#
+#     return $r
+# }
+
+function update_sources() {
     declare -i r=0
-    prepare_dir "$SRC_DIR/atom"
+
+    is_already_cloned
+
+    # If is not cloned yet, perform clone first.
+    if [[ $? -ne 0 ]]; then
+        get_sources
+    fi
+
+    # prepare_fetch
+
+    echo_header "Checkout the latest Atom release" "-"
+    log_cd "$SRC_DIR/atom"
+
+    git fetch -p
+
+    echo_result
+    r=$(( r | $? ))
+
+    git checkout "$(git describe --tags "$(git rev-list --tags --max-count=1)")"
+
+    echo_result
+    r=$(( r | $? ))
 
     return $r
 }
 
-function update_sources() {
-    declare -i r=0
-    prepare_fetch
-
-    echo "#3 - Checkout the latest Atom release..."
-    git fetch -p
-
-    echo $?
-
-    git checkout "$(git describe --tags "$(git rev-list --tags --max-count=1)")"
-
-    echo $?
-}
-
 echo_separator '_'
 echo_separator '='
-echo_header "Get sources of Atom Editor"
+echo_header "Get Atom Editor sources"
 echo_separator '='; echo
 
 declare -i errors=$E_NONE
 
-get_sources
+update_sources
 
 echo_result
 errors=$(( r | $? ))
-
 
 # pause
 # updateSources
