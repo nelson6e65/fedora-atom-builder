@@ -38,9 +38,49 @@ declare -i errors=$E_NONE
 script/install-dependencies
 errors=$(( errors | $? ))
 
+# pause
+
 script/get-sources
 errors=$(( errors | $? ))
 
-pause
+if [[ $errors -eq 0 ]]; then
+    echo_separator '_'
+    echo_separator '='
+    echo_header "Building Atom"
+    echo_separator '='; echo
+
+    log_cd "$SRC_DIR/atom"
+
+    echo_header "Building" "-"
+    script/build
+
+    echo_result
+
+    echo_separator '_'
+else
+    echo "Dependencies and sources needed in order to build"
+fi
+
+
+if [[ $errors -eq 0 ]]; then
+    echo_separator '_'
+    echo_separator '='
+    echo_header "Generating .RPM installer"
+    echo_separator '='; echo
+
+    log_cd "$SRC_DIR/atom"
+
+    script/grunt mkrpm
+
+    echo_result
+
+    echo_separator '_'
+else
+    echo "Build sources is needed"
+fi
+
+
+echo "Complete result:"
+echo_result
 
 exit $errors
