@@ -44,43 +44,21 @@ script/get-sources
 errors=$(( errors | $? ))
 
 if [[ $errors -eq 0 ]]; then
-    echo_separator '_'
-    echo_separator '='
-    echo_header "Building Atom"
-    echo_separator '='; echo
-
-    log_cd "$SRC_DIR/atom"
-
-    echo_header "Building" "-"
-    script/build
-
-    echo_result
-
-    echo_separator '_'
+    script/build-sources
+    errors=$(( errors | $? ))
 else
-    echo "Dependencies and sources needed in order to build"
+    echo "Sources is needed"
 fi
 
 
 if [[ $errors -eq 0 ]]; then
-    echo_separator '_'
-    echo_separator '='
-    echo_header "Generating .RPM installer"
-    echo_separator '='; echo
-
-    log_cd "$SRC_DIR/atom"
-
-    script/grunt mkrpm
-
-    echo_result
-
-    echo_separator '_'
+    script/build-rpm
+    errors=$(( errors | $? ))
 else
     echo "Build sources is needed"
 fi
 
-
-echo "Complete result:"
-echo_result
+echo "Total:"
+echo_result $errors
 
 exit $errors

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# -*- ENCODING: UTF-8 -*-
+#
+# Copyright (c) 2015 Nelson Martell (http://nelson6e65.github.io)
+#
+# Licensed under The MIT License (MIT)
+#
+# For full copyright and license information, please see the LICENSE
+# Redistributions of files must retain the above copyright notice.
+#
+
+if [[ -z $SCRIPT_DIR ]]; then
+    # Current file directory
+    declare -xr SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+fi
+
+if [[ -z $ROOT_DIR ]]; then
+    # Root directory
+    declare -xr ROOT_DIR=$(dirname "$SCRIPT_DIR")
+fi
+
+. "$ROOT_DIR/config/init"
+
+# Return value
+declare -i errores=$E_NONE
+
+echo_separator '_'
+echo_separator '='
+echo_header "Building Atom"
+echo_separator '=';
+
+# pause
+
+log_cd "$SRC_DIR/atom"
+errores=$(( errores | $? ))
+
+if [[ $errores -eq 0 ]]; then
+    echo_header "Building source code" "-"
+
+    script/build
+
+    echo_result
+
+    if [[ $? -ne 0 ]]; then
+        errores=$(( errores | E_BUILD_SOURCES ))
+    fi
+else
+    echo "Unable to build sources"
+    echo_result $errores
+    errores=$(( errores | E_BUILD_SOURCES ))
+fi
+
+echo_separator '_'
+
+exit $errores
