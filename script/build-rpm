@@ -41,7 +41,9 @@ if [[ $errores -eq 0 ]]; then
 
     echo_result
 
-    if [[ $? -ne 0 ]]; then
+    if [[ $? -eq 0 ]]; then
+        cp /tmp/atom-build/rpm/atom-*.rpm "$ROOT_DIR/dist"
+    else
         errores=$(( errores | E_BUILD_RPM ))
     fi
 else

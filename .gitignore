@@ -4,4 +4,7 @@
 /sources/*
 !/sources/NO_EMPTY
 
+/dist/*
+!/dist/NO_EMPTY
+
 *.bak
