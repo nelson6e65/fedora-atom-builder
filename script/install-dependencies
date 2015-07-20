@@ -37,7 +37,7 @@ echo_header "Get build dependencies" '-'; echo
 sudo yum -y install make gcc gcc-c++ glibc-devel libgnome-keyring-devel rpmdevtools
 
 echo_result
-if [ $? -ne 0 ]; then
+if [[ $? -ne 0 ]]; then
     errores=$((errores | E_INSTALL_DEP))
 fi
 
@@ -48,9 +48,22 @@ echo_header "Get Node.js" '-'; echo
 sudo yum -y install nodejs npm
 
 echo_result
-if [ $? -ne 0 ]; then
+if [[ $? -ne 0 ]]; then
     errores=$((errores | E_INSTALL_NODE))
 fi
+
+if [[ $errores -eq 0 ]]; then
+    echo_header "Update npm to lastest version" ".";
+    echo "Please do not stop this process"
+
+    sudo npm install -g npm@">=1.4.0"
+
+    echo_result
+    if [[ $? -ne 0 ]]; then
+        errores=$((errores | E_INSTALL_NODE))
+    fi
+fi
+
 
 echo_header "Get git" '-'; echo
 
@@ -61,7 +74,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo_result
-if [ $? -ne 0 ]; then
+if [[ $? -ne 0 ]]; then
     errores=$((errores | E_INSTALL_GIT))
 fi
 
