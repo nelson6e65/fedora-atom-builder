@@ -64,6 +64,9 @@ if [[ $errores -eq 0 ]]; then
     fi
 fi
 
+if [[ $errores -eq 0 ]]; then
+    echo -n "npm version "; npm --version; echo
+fi
 
 echo_header "Get git" '-'; echo
 
@@ -76,6 +79,9 @@ fi
 echo_result
 if [[ $? -ne 0 ]]; then
     errores=$((errores | E_INSTALL_GIT))
+
+else
+    git --version; echo
 fi
 
 echo_separator '_'; echo
