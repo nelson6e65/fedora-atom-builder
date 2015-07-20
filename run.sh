@@ -61,4 +61,12 @@ fi
 echo "Total:"
 echo_result $errors
 
+if [[ $errors -eq 0 ]]; then
+    echo "Done! You can install Atom via 'atom-*.rpm' file located in './dist' directory"
+    log_cd "$ROOT_DIR/dist"
+    ls
+fi
+
+pause
+
 exit $errors
