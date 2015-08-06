@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Fedora Atom Builder : A bash helper to build Atom Editor in Fedora">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Fedora Atom Builder</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/nelson6e65/fedora-atom-builder">View on GitHub</a>
+
+          <h1 id="project_title">Fedora Atom Builder</h1>
+          <h2 id="project_tagline">A bash helper to build Atom Editor in Fedora</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/nelson6e65/fedora-atom-builder/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/nelson6e65/fedora-atom-builder/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="fedora-atom-builder" class="anchor" href="#fedora-atom-builder" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fedora: Atom Builder</h1>
+
+<p><a href="LICENSE"><img src="https://img.shields.io/github/license/nelson6e65/fedora-atom-builder.svg" alt="License"></a>
+<a href="https://github.com/nelson6e65/fedora-atom-builder/tags"><img src="https://img.shields.io/github/tag/nelson6e65/fedora-atom-builder.svg" alt="Latest Tag"></a>
+<a href="https://github.com/nelson6e65/fedora-atom-builder/release"><img src="https://img.shields.io/github/release/nelson6e65/fedora-atom-builder.svg" alt="Latest Release"></a>
+<a href="https://github.com/npm/npm"><img src="https://img.shields.io/npm/v/npm.svg" alt="npm"></a>
+<a href="https://github.com/npm/node"><img src="https://img.shields.io/node/v/gh-badges.svg" alt="node"></a></p>
+
+<p>A bash helper to build Atom Editor in Fedora.</p>
+
+<p>This is a unattended script to install dependencies, get latest Atom release sources and generate an <code>*.rpm</code> installer for your distro (Fedora). </p>
+
+<p>Is intended for Fedora 32 bits arch. Should work for 64 bits, but there is an <code>*.rpm</code> installer in official <a href="https://github.com/atom/atom/releases">Atom releases</a> already.</p>
+
+<h2>
+<a id="instructions" class="anchor" href="#instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Instructions</h2>
+
+<ul>
+<li>Download the <a href="https://github.com/nelson6e65/fedora-atom-builder/releases">latest release</a>.</li>
+<li>Unzip that download.</li>
+<li>Run the <code>run.sh</code> bash script.</li>
+<li>If not errors, go to <code>dist</code> directory and install Atom with the <code>*.rpm</code> file generated.</li>
+</ul>
+
+<div class="highlight highlight-sh"><pre>$ <span class="pl-c1">cd</span> to/root/dir
+$ ./run.sh</pre></div>
+
+<p>You only will be asked for sudo privilegies when installing dependecies.</p>
+
+<p>You can, instead, run task by task (useful to skip installation/update of dependencies when you already have):</p>
+
+<div class="highlight highlight-sh"><pre><span class="pl-c"># Download and install all dependencies. You can skip this if you already installed </span>
+<span class="pl-c"># recently or you did it manually. You will be asked for sudo password. The first time </span>
+<span class="pl-c"># you should run this and the skip when you are updating:</span>
+script/install-dependencies
+
+
+<span class="pl-c"># Get sources of atom to build. The first time will take some minutes, depending of</span>
+<span class="pl-c"># your Internet download. After first clone, the download time will be shorter. You </span>
+<span class="pl-c"># should run this always to get the latest stable Atom version:</span>
+script/get-sources
+
+<span class="pl-c"># This will build atom sources and prepare the build of RPM installer. </span>
+<span class="pl-c"># Is mandatory run this:</span>
+script/build-sources
+
+<span class="pl-c"># Now, you can build RPM installer:</span>
+script/build-rpm
+</pre></div>
+
+<p>After success, you can use the <code>*.rpm</code> file to install Atom via <code>yum</code>:</p>
+
+<div class="highlight highlight-sh"><pre><span class="pl-c1">cd</span> dist/
+sudo yum localinstall atom-1.0.4-0.1.fc21.i686.rpm</pre></div>
+
+<blockquote>
+<p>This instructions was tested in <strong><code>Fedora 21 TwentyOne</code></strong>, kernel <code>i686 Linux 4.0.8-200.fc21.i686</code></p>
+</blockquote>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Fedora Atom Builder maintained by <a href="https://github.com/nelson6e65">nelson6e65</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
