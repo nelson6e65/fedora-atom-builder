@@ -1,7 +1,14 @@
-# Fedora: Atom builder
+# Fedora: Atom Builder
+[![License](https://img.shields.io/github/license/nelson6e65/fedora-atom-builder.svg)](LICENSE)
+[![Latest Tag](https://img.shields.io/github/tag/nelson6e65/fedora-atom-builder.svg)](https://github.com/nelson6e65/fedora-atom-builder/tags)
+[![Latest Release](https://img.shields.io/github/release/nelson6e65/fedora-atom-builder.svg)](https://github.com/nelson6e65/fedora-atom-builder/release)
+[![npm](https://img.shields.io/npm/v/npm.svg)](https://github.com/npm/npm)
+[![node](https://img.shields.io/node/v/gh-badges.svg)](https://github.com/npm/node)
+
+
 A bash helper to build Atom Editor in Fedora.
 
-This is a unattended script to install dependencies, get latest Atom release sources and generate an `RPM` installer for your distro (Fedora). 
+This is a unattended script to install dependencies, get latest Atom release sources and generate an `*.rpm` installer for your distro (Fedora). 
 
 Is intended for Fedora 32 bits arch. Should work for 64 bits, but there is an `*.rpm` installer in official [Atom releases](https://github.com/atom/atom/releases) already.
 
