@@ -49,7 +49,8 @@ declare -ixr E_GIT_CLONE_DIRECTORY=32
 declare -ixr E_GIT_CLONE_UNEXPECTED=64
 declare -ixr E_BUILD_SOURCES=128
 declare -ixr E_BUILD_RPM=256
+declare -ixr E_INSTALL_BOWER=512
 
-declare -ixr E_LAST=256
+declare -ixr E_LAST=512
 
 declare -ixr CONFIG_CONSTANTS_LOADED=0

@@ -112,6 +112,22 @@ else
     git --version; echo
 fi
 
+
+echo_header "Get bower" '-'; echo
+
+is_installed "bower"
+
+if [[ $? -ne 0 ]]; then
+    sudo npm install bower -g
+fi
+
+echo_result
+if [[ $? -ne 0 ]]; then
+    errores=$((errores | E_INSTALL_BOWER))
+else
+    echo -n "bower version: "; bower --version; echo
+fi
+
 echo_separator '_'; echo
 
 exit $errores
