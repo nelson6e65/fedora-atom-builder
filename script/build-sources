@@ -37,6 +37,8 @@ errores=$(( errores | $? ))
 if [[ $errores -eq 0 ]]; then
     echo_header "Building source code" "-"
 
+    script/clean
+
     script/build
 
     echo_result
