@@ -43,30 +43,58 @@ fi
 
 echo_header "Get Node.js" '-'; echo
 
-# TODO: Fix conflicts when another node is installed
-# I solved: sudo yum remove node* before install and works for me.
-sudo yum -y install nodejs npm
-
-echo_result
-if [[ $? -ne 0 ]]; then
-    errores=$((errores | E_INSTALL_NODE))
-fi
-
-if [[ $errores -eq 0 ]]; then
-    echo_header "Update npm to lastest version" ".";
-    echo "Please do not stop this process"
-
-    sudo npm install -g npm@">=1.4.0"
+install_node() {
+    # TODO: Fix conflicts when another node is installed
+    # I solved: sudo yum remove node* before install and works for me.
+    sudo yum -y install nodejs npm
 
     echo_result
     if [[ $? -ne 0 ]]; then
         errores=$((errores | E_INSTALL_NODE))
     fi
+
+    if [[ $errores -eq 0 ]]; then
+        echo_header "Update npm to lastest version" ".";
+        echo "Please do not stop this process"
+
+        sudo npm install -g npm@">=1.4.0"
+
+        echo_result
+        if [[ $? -ne 0 ]]; then
+            errores=$((errores | E_INSTALL_NODE))
+        fi
+    fi
+
+    if [[ $errores -eq 0 ]]; then
+        echo -n "npm version "; npm --version; echo
+    fi
+}
+
+# install_node # Auto install npm is disabled since v0.3.0
+
+is_installed "npm"
+
+if [[ $? -ne 0 ]]; then
+    echo "To install Node.js and npm, follow this instructions:"
+    echo "  https://docs.npmjs.com/getting-started/installing-node"
+
+    errores=$((errores | E_INSTALL_NODE))
 fi
 
 if [[ $errores -eq 0 ]]; then
-    echo -n "npm version "; npm --version; echo
+    echo "Minimum npm version required: v1.4"
+    echo -n "Actual npm version: "; npm --version; echo
+
+    is_installed "node"
+
+    if [[ $? -ne 0 ]]; then
+        echo "To install Node.js and npm, follow this instructions:"
+        echo "  https://docs.npmjs.com/getting-started/installing-node"
+
+        errores=$((errores | E_INSTALL_NODE))
+    fi
 fi
+
 
 echo_header "Get git" '-'; echo
 
@@ -82,6 +110,22 @@ if [[ $? -ne 0 ]]; then
 
 else
     git --version; echo
+fi
+
+
+echo_header "Get bower" '-'; echo
+
+is_installed "bower"
+
+if [[ $? -ne 0 ]]; then
+    sudo npm install bower -g
+fi
+
+echo_result
+if [[ $? -ne 0 ]]; then
+    errores=$((errores | E_INSTALL_BOWER))
+else
+    echo -n "bower version: "; bower --version; echo
 fi
 
 echo_separator '_'; echo

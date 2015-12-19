@@ -36,6 +36,10 @@ errores=$(( errores | $? ))
 
 if [[ $errores -eq 0 ]]; then
     echo_header "Building source code" "-"
+    echo -n "Note: This operation may take several minutes to complete."
+    echo " Just leave me here making my job. ;)"
+
+    script/clean
 
     script/build
 

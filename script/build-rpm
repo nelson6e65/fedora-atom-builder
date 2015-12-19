@@ -42,7 +42,49 @@ if [[ $errores -eq 0 ]]; then
     echo_result
 
     if [[ $? -eq 0 ]]; then
-        cp /tmp/atom-build/rpm/atom-*.rpm "$ROOT_DIR/dist"
+        echo_header "Getting a copy to DIST directory" "-"
+
+        dir="$ROOT_DIR/dist"
+
+        # Checks if sources directory for sources:
+        if [[ -e $dir ]]; then
+            if [[ ! -d $dir ]]; then
+                echo "Error: '$dir' must to be a directory."
+                echo "'$dir' exists, but can not be used to copy resulting build."
+                echo "You must install '*.rpm' from temporal directory instead."
+
+                # TODO: Add autosolver
+
+                errores=$((errores | E_COPY_BUILDED_IN_DIST_DIRECTORY))
+            fi
+        else
+            # Try to solve, creating the folder...
+            mkdir "$dir"
+            if [[ $? -ne 0 ]]; then
+                errores=$((errores | E_COPY_BUILDED_IN_DIST_DIRECTORY))
+            fi
+        fi
+
+        if [[ ! -w $dir ]]; then
+            echo "Error: '$dir' must to have write permissions."
+            echo -n "'$dir' directory exists, but can not be used to copy resulting build."
+            echo " Grand write permissions manually the next time you run this script."
+            echo "You must install '*.rpm' from temporal directory instead."
+
+            # TODO: Add autosolver
+
+            errores=$((errores | E_COPY_BUILDED_IN_DIST_DIRECTORY))
+        fi
+
+        cp /tmp/atom-build/rpm/atom-*.rpm $dir
+
+        echo_result
+        if [[ $? -ne 0 ]]; then
+            echo "Unable to copy builded file."
+            echo "You must install '*.rpm' from temporal directory instead."
+            errores=$((errores | E_COPY_BUILDED_IN_DIST_DIRECTORY))
+        fi
+
     else
         errores=$(( errores | E_BUILD_RPM ))
     fi

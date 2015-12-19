@@ -1,0 +1,27 @@
+{
+  "name": "fedora-atom-builder",
+  "homepage": "https://github.com/nelson6e65/fedora-atom-builder",
+  "authors": [
+    "Nelson Martell <nelson6e65-dev@yahoo.es>"
+  ],
+  "description": "Builder helper for Atom Editor for Fedora",
+  "main": "run.sh",
+  "keywords": [
+    "fedora",
+    "atom",
+    "x86",
+    "32bit",
+    "builder",
+    "rpm"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests"
+  ],
+  "devDependencies": {
+    "atom": "atom/atom#latest"
+  }
+}

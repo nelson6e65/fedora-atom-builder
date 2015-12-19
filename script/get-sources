@@ -150,6 +150,13 @@ function update_sources() {
     return $r
 }
 
+
+bower_install() {
+    echo_header "Getting latest Atom sources via Bower" "-"
+
+    bower install atom/atom#latest --force-latest
+}
+
 echo_separator '_'
 echo_separator '='
 echo_header "Get Atom Editor sources"
@@ -157,7 +164,9 @@ echo_separator '='; echo
 
 declare -i errors=$E_NONE
 
-update_sources
+# update_sources # Cloning using git directly disabled sinse v0.3
+# Now, using bower to get sources
+bower_install
 
 echo_result
 errors=$(( r | $? ))
