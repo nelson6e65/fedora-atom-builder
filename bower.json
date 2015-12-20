@@ -4,7 +4,7 @@
   "authors": [
     "Nelson Martell <nelson6e65-dev@yahoo.es>"
   ],
-  "description": "Builder helper for Atom Editor for Fedora",
+  "description": "Fedora Atom Builder: Helper to build Atom Editor.",
   "main": "run.sh",
   "keywords": [
     "fedora",
