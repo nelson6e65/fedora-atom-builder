@@ -169,7 +169,10 @@ declare -i errors=$E_NONE
 bower_install
 
 echo_result
-errors=$(( r | $? ))
+
+if [[ $? -ne 0 ]]; then
+    errors=$(( errors | E_GET_SOURCES ))
+fi
 
 # pause
 # updateSources

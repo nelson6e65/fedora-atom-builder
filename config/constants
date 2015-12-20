@@ -51,6 +51,7 @@ declare -ixr E_BUILD_SOURCES=128
 declare -ixr E_BUILD_RPM=256
 declare -ixr E_INSTALL_BOWER=512
 declare -ixr E_COPY_BUILDED_IN_DIST_DIRECTORY=1024
+declare -ixr E_GET_SOURCES=2048
 
 declare -ixr E_LAST=1024
 
