@@ -154,7 +154,7 @@ function update_sources() {
 bower_install() {
     echo_header "Getting latest Atom sources via Bower" "-"
 
-    bower install
+    bower update --force-latest
 }
 
 echo_separator '_'
