@@ -76,7 +76,7 @@ cd dist/
 sudo yum localinstall atom-1.3.2-0.1.fc21.i686.rpm
 ```
 
-### Advansed usage
+### Advanced usage
 You can, instead, run task by task (useful to skip installation/update of dependencies when you are sure you already have installed):
 
 #### Install all dependencies
