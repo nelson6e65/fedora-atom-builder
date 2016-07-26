@@ -38,10 +38,14 @@ declare -i errors=$E_NONE
 script/install-dependencies
 errors=$(( errors | $? ))
 
+if [[ $errors -eq 0 ]]; then
+    script/get-sources
+    errors=$(( errors | $? ))
+else
+    echo "Some dependecies are needed!"
+fi
 # pause
 
-script/get-sources
-errors=$(( errors | $? ))
 
 if [[ $errors -eq 0 ]]; then
     script/build-sources
