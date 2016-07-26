@@ -34,19 +34,19 @@ echo "You only will be disturbed for a password or if an error occurrs."; echo
 
 echo_header "Get build dependencies" '-'; echo
 
-sudo yum -y install make gcc gcc-c++ glibc-devel libgnome-keyring-devel rpmdevtools
+sudo dnf -y install make gcc gcc-c++ glibc-devel libgnome-keyring-devel rpmdevtools
 
 echo_result
 if [[ $? -ne 0 ]]; then
     errores=$((errores | E_INSTALL_DEP))
 fi
 
-echo_header "Get Node.js" '-'; echo
+# echo_header "Get Node.js" '-'; echo
 
 install_node() {
     # TODO: Fix conflicts when another node is installed
     # I solved: sudo yum remove node* before install and works for me.
-    sudo yum -y install nodejs npm
+    sudo dnf -y install nodejs
 
     echo_result
     if [[ $? -ne 0 ]]; then
@@ -101,7 +101,7 @@ echo_header "Get git" '-'; echo
 is_installed "git"
 
 if [[ $? -ne 0 ]]; then
-    sudo yum -y install git
+    sudo dnf -y install git
 fi
 
 echo_result
