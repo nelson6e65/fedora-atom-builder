@@ -1,8 +1,8 @@
-# Fedora: Atom Builder
+# Fedora: Atom [![(atom.io)](https://cdn.rawgit.com/atom/atom/master/resources/app-icons/dev/png/24.png)](https://atom.io) Builder 
+
 [![License](https://img.shields.io/github/license/nelson6e65/fedora-atom-builder.svg)](LICENSE)
 [![Latest Tag](https://img.shields.io/github/tag/nelson6e65/fedora-atom-builder.svg)](https://github.com/nelson6e65/fedora-atom-builder/tags)
 [![Latest Release](https://img.shields.io/github/release/nelson6e65/fedora-atom-builder.svg)](https://github.com/nelson6e65/fedora-atom-builder/release)
-
 
 [![Atom](https://img.shields.io/github/release/atom/atom.svg?label=atom)](https://github.com/nelson6e65/fedora-atom-builder/release)
 [![npm](https://img.shields.io/npm/v/npm.svg)](https://github.com/npm/npm)
