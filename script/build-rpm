@@ -76,7 +76,7 @@ if [[ $errores -eq 0 ]]; then
             errores=$((errores | E_COPY_BUILDED_IN_DIST_DIRECTORY))
         fi
 
-        cp /tmp/atom-build/rpm/atom-*.rpm $dir
+        cp out/rpm/atom-*.rpm $dir
 
         echo_result
         if [[ $? -ne 0 ]]; then
