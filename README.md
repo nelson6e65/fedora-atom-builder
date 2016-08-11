@@ -67,14 +67,7 @@ cd /path/to/fedora-atom-builder
 
 You only will be asked for sudo privilegies when installing dependecies.
 
-After success, you can use the `*.rpm` file to install Atom via `yum`.
-
-For example:
-
-```sh
-cd dist/
-sudo yum localinstall atom-1.3.2-0.1.fc21.i686.rpm
-```
+After success, this will create a `*.rmp` file in the `dist/` directory.
 
 ### Advanced usage
 You can, instead, run task by task (useful to skip installation/update of dependencies when you are sure you already have installed):
@@ -119,4 +112,4 @@ sudo dnf install dist/atom-*.rpm
 
 **Done! You have the latest Atom Editor updated in your Fedora! Easy :cake:.**
 
-> This instructions was tested in **`Fedora 21 TwentyOne`**, kernel `i686 Linux 4.0.8-200.fc21.i686`
+> This instructions was tested in **`Fedora 24 TwentyFour`**, kernel `i686 Linux 4.6.4-301.fc24.i686`.
