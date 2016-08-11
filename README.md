@@ -1,4 +1,4 @@
-# Fedora: Atom [![(atom.io)](https://cdn.rawgit.com/atom/atom/master/resources/app-icons/dev/png/24.png)](https://atom.io) Builder 
+# Fedora: Atom [![(atom.io)](https://cdn.rawgit.com/atom/atom/master/resources/app-icons/dev/png/24.png)](https://atom.io) Builder
 
 [![License](https://img.shields.io/github/license/nelson6e65/fedora-atom-builder.svg)](LICENSE)
 [![Latest Tag](https://img.shields.io/github/tag/nelson6e65/fedora-atom-builder.svg)](https://github.com/nelson6e65/fedora-atom-builder/tags)
@@ -112,8 +112,7 @@ script/build-rpm
 After this, you can install the `*.rpm` file in `dist` directory:
 
 ```sh
-cd dist/
-sudo yum localinstall atom-*.rpm
+sudo dnf install dist/atom-*.rpm
 ```
 
 >Note: You may need to make ejecutable the files inside `script` directory to be able to run it directly.

@@ -66,9 +66,11 @@ echo "Total:"
 echo_result $errors
 
 if [[ $errors -eq 0 ]]; then
-    echo "Done! You can install Atom via 'atom-*.rpm' file located in './dist' directory"
-    log_cd "$ROOT_DIR/dist"
-    ls
+    echo "Done!"
+    echo "Now you can install your Atom Editor by runing:"
+    echo "  sudo dnf install ${ROOT_DIR}/dist/atom-*.rpm"
+    echo "or explore 'atom-*.rpm' file in '${ROOT_DIR}/dist':"
+    ls "${ROOT_DIR}/dist"
 fi
 
 pause
