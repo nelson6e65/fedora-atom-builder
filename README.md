@@ -1,4 +1,4 @@
-# Fedora: Atom [![(atom.io)](https://cdn.rawgit.com/atom/atom/master/resources/app-icons/dev/png/24.png)](https://atom.io) Builder
+# Fedora: Atom Builder ![Atom Builder Icon](https://rawgit.com/nelson6e65/fedora-atom-builder/master/resources/images/atom-builder-icon/stable/48.png)
 
 [![License](https://img.shields.io/github/license/nelson6e65/fedora-atom-builder.svg)](LICENSE)
 [![Latest Tag](https://img.shields.io/github/tag/nelson6e65/fedora-atom-builder.svg)](https://github.com/nelson6e65/fedora-atom-builder/tags)
