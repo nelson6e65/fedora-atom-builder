@@ -261,6 +261,59 @@ alert_debug() {
     alert "$message" "$title" $t $level "$icon"
 }
 
+# Imprime una alerta en la consola
+echo_alert() {
+    declare bold=$(tput bold)
+    declare normal=$(tput sgr0)
+    declare message=${1:-''}
+    declare title=${2:-'Alert:'}
+    declare -i level=${3:-3}
+    declare color="\e[3${level}m" # Normal color
+
+    echo -ne "\a${bold}${color}${title} "
+    echo -ne "${normal}${color}${message}"
+    echo -e "\e[0m"
+}
+
+# Imprime una alerta en la consola de nivel 'info', además de una notificación
+# de escritorio.
+show_info() {
+    declare message=${1:-''}
+    declare title=${2:-'Info:'}
+
+    echo_alert "${message}" "${title}" 6
+
+    alert_info "${message}" "${title}"
+}
+
+show_success() {
+    declare message=${1:-''}
+    declare title=${2:-'Success!'}
+
+    echo_alert "${message}" "${title}" 2
+
+    alert_info "${message}" "${title}"
+}
+
+show_warning() {
+    declare message=${1:-''}
+    declare title=${2:-'Warning!'}
+
+    echo_alert "${message}" "${title}" 3
+
+    alert_debug "${message}" "${title}"
+}
+
+show_error() {
+    declare message=${1:-''}
+    declare title=${2:-'Error!'}
+
+    echo_alert "${message}" "${title}" 1
+
+    alert_error "${message}" "${title}"
+}
+
+
 function menu() {
     echo "==========================================================================="
     echo "Select an option to perform"
