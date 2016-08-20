@@ -37,6 +37,10 @@ if [[ -z $SCRIPT_DIR ]]; then
     declare -xr SCRIPT_DIR="$ROOT_DIR/script"
 fi
 
+if [[ -z $RESOURCES_DIR ]]; then
+    declare -xr RESOURCES_DIR="$ROOT_DIR/resources"
+fi
+
 # [Flags]
 # Error constants
 declare -ixr E_NONE=0
