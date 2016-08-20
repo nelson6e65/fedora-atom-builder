@@ -31,7 +31,7 @@ fi
 
 if [[ $? -ne 0 ]]; then
     echo "Internal Error: Loading functions."
-    exit E_INIT
+    exit $E_INIT
 fi
 
 # declare -ixr CONFIG_INITIALIZED=0
