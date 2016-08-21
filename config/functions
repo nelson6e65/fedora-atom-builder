@@ -236,7 +236,7 @@ alert() {
 alert_info() {
     declare message=${1:-''}
     declare title=${2:-'Info'}
-    declare t=${3:-5000}
+    declare t=${3:-10000}
     declare level="normal"
     declare icon="${RESOURCES_DIR}/images/atom-builder-icon/stable/48.png"
 
@@ -247,7 +247,7 @@ alert_info() {
 alert_error() {
     declare message=${1:-''}
     declare title=${2:-'Error'}
-    declare t=${3:-10000}
+    declare t=${3:-15000}
     declare level="critical"
     declare icon="${RESOURCES_DIR}/images/atom-builder-icon/beta/48.png"
 
@@ -258,7 +258,7 @@ alert_error() {
 alert_debug() {
     declare message=${1:-''}
     declare title=${2:-'Debug'}
-    declare t=${3:-20000}
+    declare t=${3:-15000}
     declare level="low"
     declare icon="${RESOURCES_DIR}/images/atom-builder-icon/dev/48.png"
 
