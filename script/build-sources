@@ -36,21 +36,25 @@ errores=$(( errores | $? ))
 
 if [[ $errores -eq 0 ]]; then
     echo_header "Building source code" "-"
-    echo -n "Note: This operation may take several minutes to complete."
+
+    show_info "This operation may take several minutes to get completed." \
+        "Building source code..."
     echo " Just leave me here making my job. ;)"
 
-    script/clean
+    script/clean || show_warning "Failed to clean old builded"
 
     script/build
 
-    echo_result
-
-    if [[ $? -ne 0 ]]; then
+    if [[ $? -eq 0 ]]; then
+        show_success "Atom sources are ready to be compiled into .rpm installer." \
+            "Atom sources builded successfully!"
+    else
+        show_error "Errors on building sources" "Unable to build sources"
         errores=$(( errores | E_BUILD_SOURCES ))
     fi
 else
-    echo "Unable to build sources"
-    echo_result $errores
+    show_error "Atom sources are not reachable. Did you got the sources?" \
+        "Unable to build sources"
     errores=$(( errores | E_BUILD_SOURCES ))
 fi
 

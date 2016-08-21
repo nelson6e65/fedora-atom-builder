@@ -143,19 +143,23 @@ echo_nheader() {
 # Print "Sucess!" or "Failed!" depending if value given (default: $?) represents
 # a success (0) of failed statment, respectively.
 echo_result() {
-    declare result=${1:-$?}
+    declare -i r=${1:-$?}
+    declare title=${2:-' '}
+    declare message='Result: '
 
     echo
 
-    if [ "$result" -eq 0 ]; then
-        echo -e "\e[32mSuccess!\e[0m"
+    if [[ $r -eq 0 ]]; then
+        message+='Success!'
+        show_success "${message}" "${title}"
     else
-        echo -e "\e[31mFailed!\e[0m"
+        message+='Failed!'
+        show_error "${message}" "${title}"
     fi
 
     echo
 
-    return "$result"
+    return $r
 }
 
 font_bold() {

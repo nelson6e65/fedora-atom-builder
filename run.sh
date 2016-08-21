@@ -16,10 +16,22 @@ if [[ $? -ne 0 ]]; then
 fi
 
 function bash_header() {
+    declare title="Fedora Atom Builder"
+    declare description="Bash helper to compile Atom Editor (http://atom.io)."
+    declare copyright="2015-2016 (c) Nelson Martell (@nelson6e65)"
+    declare page="http://nelson6e65.github.io/fedora-atom-builder"
+
     clear
+
+    alert_debug "${description}\n${copyright}" "${title}"
+
     echo_separator "#"
-    echo "# Atom Builder for Fedora"
-    echo "# by @nelson6e65         "
+
+    echo "# ${title}"
+    echo "# ${description}"
+    echo "# ${copyright}"
+    echo "# Web: ${page}"
+
     echo_separator "#"
 }
 
@@ -62,15 +74,17 @@ else
     echo "Build sources is needed"
 fi
 
-echo "Total:"
-echo_result $errors
-
+declare msg=""
 if [[ $errors -eq 0 ]]; then
-    echo "Done!"
-    echo "Now you can install your Atom Editor by runing:"
-    echo "  sudo dnf install ${ROOT_DIR}/dist/atom-*.rpm"
-    echo "or explore 'atom-*.rpm' file in '${ROOT_DIR}/dist':"
-    ls "${ROOT_DIR}/dist"
+    msg="\nYou can install your Atom Editor by runing:"
+    msg+="\n  sudo dnf install ${ROOT_DIR}/dist/atom-*.rpm"
+    msg+="\nor find 'atom-*.rpm' file in '${ROOT_DIR}/dist' directory."
+    show_success "${msg}" "Fedora Atom Builder finished"
+    echo "Available:"
+    ls -l "${ROOT_DIR}/dist"
+else
+    msg="Some errors occurrs while runing tasks!"
+    show_error "${msg}" "Fedora Atom Builder failed!"
 fi
 
 pause

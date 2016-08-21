@@ -29,103 +29,91 @@ echo_separator '='
 echo_header "Install Atom requirements"
 echo_separator '='; echo
 
+alert_debug "Installing Atom requirements..." "Fedora Atom Builder"
+
 echo "This will take a few minutes."
 echo "You only will be disturbed for a password or if an error occurrs."; echo
 
-echo_header "Get build dependencies" '-'; echo
+echo; echo_header "Get build dependencies" '-'
 
 sudo dnf -y install make gcc gcc-c++ glibc-devel libgnome-keyring-devel rpmdevtools
 
-echo_result
-if [[ $? -ne 0 ]]; then
+if [[ $? -eq 0 ]]; then
+    show_success "Build dependencies are already installed or were installed sucessfully." \
+        "Build dependencies installed sucessfully!"
+else
+    show_error "Failed to install some build dependencies. Retry." \
+        "Unable to install some build dependencies!"
     errores=$((errores | E_INSTALL_DEP))
 fi
 
-# echo_header "Get Node.js" '-'; echo
+echo; echo_header "Checking git" '-';
 
-install_node() {
-    # TODO: Fix conflicts when another node is installed
-    # I solved: sudo yum remove node* before install and works for me.
-    sudo dnf -y install nodejs
+is_installed "git"
 
-    echo_result
-    if [[ $? -ne 0 ]]; then
-        errores=$((errores | E_INSTALL_NODE))
+declare -a git_full_version=
+
+if [[ $? -eq 0 ]]; then
+    git_full_version=($(git --version))
+    git_version="${git_full_version[-1]}"
+    show_success "Git ${git_version} is already installed." \
+        "Checking Git:"
+else
+    sudo dnf -y install git
+
+    if [[ $? -eq 0 ]]; then
+        git_full_version=($(git --version))
+        git_version="${git_full_version[-1]}"
+        show_success "Git ${git_version} was installed sucessfully." \
+            "Git installed sucessfully!"
+    else
+        show_error "Failed to install Git." \
+            "Unable to install Git!"
+        errores=$((errores | E_INSTALL_GIT))
     fi
+fi
 
-    if [[ $errores -eq 0 ]]; then
-        echo_header "Update npm to lastest version" ".";
-        echo "Please do not stop this process"
+echo; echo_header "Checking Node.js" '-'
 
-        sudo npm install -g npm@">=1.4.0"
+is_installed "npm" && is_installed "node"
 
-        echo_result
-        if [[ $? -ne 0 ]]; then
-            errores=$((errores | E_INSTALL_NODE))
-        fi
-    fi
-
-    if [[ $errores -eq 0 ]]; then
-        echo -n "npm version "; npm --version; echo
-    fi
-}
-
-# install_node # Auto install npm is disabled since v0.3.0
-
-is_installed "npm"
-
-if [[ $? -ne 0 ]]; then
-    echo "To install Node.js and npm, follow this instructions:"
-    echo "  https://docs.npmjs.com/getting-started/installing-node"
+if [[ $? -eq 0 ]]; then
+    npm_version=$(npm --version)
+    node_version=$(node --version)
+    message="npm ${npm_version} is already installed."
+    message+="\nNode ${npm_version} is already installed."
+    message+="\nNote: npm >= 1.4 is required."
+    show_success "${message}" "Checking Node.js:"
+else
+    # Auto install npm is disabled since v0.3.0
+    message="To install Node.js and npm, follow this instructions:"
+    message+="  https://docs.npmjs.com/getting-started/installing-node"
+    show_error "${message}" "Node.js and npm are not installed!"
 
     errores=$((errores | E_INSTALL_NODE))
 fi
 
-if [[ $errores -eq 0 ]]; then
-    echo "Minimum npm version required: v1.4"
-    echo -n "Actual npm version: "; npm --version; echo
 
-    is_installed "node"
-
-    if [[ $? -ne 0 ]]; then
-        echo "To install Node.js and npm, follow this instructions:"
-        echo "  https://docs.npmjs.com/getting-started/installing-node"
-
-        errores=$((errores | E_INSTALL_NODE))
-    fi
-fi
-
-
-echo_header "Get git" '-'; echo
-
-is_installed "git"
-
-if [[ $? -ne 0 ]]; then
-    sudo dnf -y install git
-fi
-
-echo_result
-if [[ $? -ne 0 ]]; then
-    errores=$((errores | E_INSTALL_GIT))
-
-else
-    git --version; echo
-fi
-
-
-echo_header "Get bower" '-'; echo
+echo_header "Checking bower" '-'; echo
 
 is_installed "bower"
 
-if [[ $? -ne 0 ]]; then
-    sudo npm install bower -g
-fi
-
-echo_result
-if [[ $? -ne 0 ]]; then
-    errores=$((errores | E_INSTALL_BOWER))
+if [[ $? -eq 0 ]]; then
+    bower_version=$(bower --version)
+    show_success "Bower ${bower_version} is already installed." \
+        "Checking Bower:"
 else
-    echo -n "bower version: "; bower --version; echo
+    is_installed "npm" && sudo npm install bower -g
+
+    if [[ $? -eq 0 ]]; then
+        bower_version=$(bower --version)
+        show_success "Bower ${bower_version} was installed sucessfully." \
+            "Bower installed sucessfully!"
+    else
+        show_error "Failed to install Bower." \
+            "Unable to install Bower!"
+        errores=$((errores | E_INSTALL_BOWER))
+    fi
 fi
 
 echo_separator '_'; echo

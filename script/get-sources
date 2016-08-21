@@ -83,14 +83,16 @@ function get_sources() {
 
             git clone https://github.com/atom/atom
 
-            echo_result
             r=$(( r | $? ))
 
             if [[ $r -ne 0 ]]; then
                 case $? in
                     128 )
-                        echo "Unexpected error while getting sources from GitHub."
+                        show_error "Unexpected error while getting sources from GitHub."
                         r=$(( r | E_GIT_CLONE_UNEXPECTED ))
+                        ;;
+                    * )
+                        show_error "Failed to clone sources"
                         ;;
                 esac
 
@@ -112,7 +114,7 @@ function is_already_cloned() {
     fi
 
     echo
-    return $r;
+    return $r
 }
 
 # function prepare_fetch() {
@@ -137,14 +139,8 @@ function update_sources() {
     echo_header "Fetching the latest Atom release" "-"
     log_cd "$SRC_DIR/atom"
 
-    git fetch -p
+    git fetch -p && git checkout "$(git describe --tags "$(git rev-list --tags --max-count=1)")"
 
-    echo_result
-    r=$(( r | $? ))
-
-    git checkout "$(git describe --tags "$(git rev-list --tags --max-count=1)")"
-
-    echo_result
     r=$(( r | $? ))
 
     return $r
@@ -159,8 +155,10 @@ bower_install() {
 
 echo_separator '_'
 echo_separator '='
-echo_header "Get Atom Editor sources"
+echo_header "Getting Atom Editor sources"
 echo_separator '='; echo
+
+alert_debug "Getting Atom Editor sources..." "Fedora Atom Builder"
 
 declare -i errors=$E_NONE
 
@@ -168,9 +166,10 @@ declare -i errors=$E_NONE
 # Now, using bower to get sources
 bower_install
 
-echo_result
-
-if [[ $? -ne 0 ]]; then
+if [[ $? -eq 0 ]]; then
+    show_success "Sources updated sucessfully (via Bower)" "Atom sources updated"
+else
+    show_error "Failed to update sources (via Bower)" "Unable to get Atom sources"
     errors=$(( errors | E_GET_SOURCES ))
 fi
 
