@@ -40,6 +40,16 @@ is_installed() {
     return 1
 }
 
+#
+trim() {
+    declare text=${1}
+
+    text="${text#"${text%%[![:space:]]*}"}"
+    text="${text%"${text##*[![:space:]]}"}"
+
+    echo -n "${text}"
+}
+
 log_cd() {
     cd "$1"
     r=$?
