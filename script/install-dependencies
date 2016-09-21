@@ -81,7 +81,7 @@ if [[ $? -eq 0 ]]; then
     npm_version=$(npm --version)
     node_version=$(node --version)
     message="npm ${npm_version} is already installed."
-    message+="\nNode ${npm_version} is already installed."
+    message+="\nNode ${node_version} is already installed."
     message+="\nNote: npm >= 1.4 is required."
     show_success "${message}" "Checking Node.js:"
 else
