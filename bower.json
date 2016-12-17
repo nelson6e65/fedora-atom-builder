@@ -22,6 +22,6 @@
     "tests"
   ],
   "devDependencies": {
-    "atom": "atom/atom#latest"
+    "atom": "atom/atom#<1.10.1"
   }
 }

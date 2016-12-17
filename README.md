@@ -15,6 +15,9 @@ This is a unattended script to install dependencies, get latest Atom release sou
 
 Is intended for Fedora 32 bits arch. Should work for 64 bits, but there is an `*.rpm` installer in official [Atom releases](https://github.com/atom/atom/releases) already.
 
+> Note: Changes in build procedure throws errors for versions 1.10.1+.
+> Some bugs in x86 building where fixed in atom-1.13.*-beta versions, so `1.11` and `1.12` atom versions are incompatibles with x86 building.
+
 ## Dependencies
 As [Atom build requirement](https://github.com/atom/atom/blob/master/docs/build-instructions/linux.md#requirements), you will need **Node.js** and **npm** installed:
 - Node.js (0.10.x or above)
